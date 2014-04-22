@@ -1,15 +1,21 @@
-pro write_class_fits_dump, list_file $
-                           , class_file = class_file $
-                           , skip_day = skip_day
-
+pro write_class_fits_dump $
+   , list_file $
+   , class_file = class_file $
+   , skip_day = skip_day $
+   , class_dir = class_dir
+  
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
 ; SET DEFAULTS
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
 
-  if n_elements(class_file) eq 0 then class_file = 'write_to_fits.class'
+  if n_elements(class_file) eq 0 then $
+     class_file = 'write_to_fits.class'
 
   if n_elements(skip_day) eq 0 then skip_day = ''
   
+  if n_elements(class_dir) eq 0 then $
+     class_dir = "../../class/"
+
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&% 
 ; WE ARE JUST WRITING FROM COLUMN 1 + COLUMN 2 TO COLUMN 3
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
@@ -36,7 +42,7 @@ pro write_class_fits_dump, list_file $
 
 ; LOOP OVER FILES AND WRITE A COMMAND FOR EACH
   for i = 0, n_elements(input_file)-1 do begin
-     line = '@ ../../class/write_fits_spec '
+     line = '@ '+class_dir+'write_fits_spec '
      line += directory[i]+input_file[i]
      line += ' '
      line += directory[i]+output_file[i]

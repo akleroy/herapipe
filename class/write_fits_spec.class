@@ -1,0 +1,25 @@
+! write_fits_spec
+
+! PURPOSE
+
+! Write the WILMA spectra in a file to a fits table
+
+! SYNTAX
+
+! @ write_fits_spec input_file output_file
+
+
+! tell CLASS to be quiet
+sic MESSAGE CLASS S=FE
+
+set angle sec
+
+say Converting &1 to fits file &2
+
+file in &1
+
+find /telescope 30M-W*
+
+sys "rm &2"
+fits write &2 /mode index /bits -32
+
