@@ -6,7 +6,8 @@ pro make_reference_spectra $
    , median = use_median $
    , min_ref = min_ref_size $
    , max_ref = max_ref_size $
-   , relaxed = relaxed
+   , relaxed = relaxed $
+   , fts=fts
 
 ;+
 ;
@@ -25,7 +26,7 @@ pro make_reference_spectra $
 ; %&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&
 
 ; DEFINE THE HERA PIXELS
-@define_hera_pixels.bat
+@define_hera_pixels.pro
   
 ; DEFINE A "LARGE TIME STEP" IN SECONDS (WE CHECK THE TIME GAP BETWEEN
 ; SUCCESSIVE DATA DUMPS AND DATA BEFORE/AFTER SUCH A STEP CANNOT BE

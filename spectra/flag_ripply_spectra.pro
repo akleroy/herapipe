@@ -4,7 +4,8 @@ pro flag_ripply_spectra $
    , blank = blank $
    , smooth = smooth $
    , show = show $
-   , report = report
+   , report = report $
+   , fts = fts
 
 ; ABSOLUTE CUTOFF - ABOUT 5% BASED ON A SUBSTANTIAL SWATH OF DATA
   abs_ripple_cut = 20           
@@ -135,7 +136,7 @@ pro flag_ripply_spectra $
        
        loadct, 0, /silent
        reversect
-       @define_hera_pixels.bat
+       @define_hera_pixels.pro
        !p.multi=[0,5,4]
        for j = 0, npix-1 do begin
 

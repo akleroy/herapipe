@@ -7,7 +7,8 @@ pro hera_base_fit $
    , smooth_in_vel = smooth_in_vel $
    , infile = infile $
    , keep_blank=keep_blank $
-   , show=show
+   , show=show $
+   , fts=fts
 
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
 ; SET SOME DEFAULT VALUES
@@ -16,7 +17,7 @@ pro hera_base_fit $
   if n_elements(skip_day) eq 0 then skip_day = ''
 
 ; DEFINE THE HERA PIXELS
-@define_hera_pixels.bat
+@define_hera_pixels.pro
 
 ; THE DEFAULT DEGREE OF POLYNOMIAL FIT
   if n_elements(degree) eq 0 then $

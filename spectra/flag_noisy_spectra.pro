@@ -6,7 +6,8 @@ pro flag_noisy_spectra $
    , show = show $
    , report = report $
    , relative_noise_only = relative_noise_only $
-   , abs_noise_cute = abs_noise_cut
+   , abs_noise_cute = abs_noise_cut $
+   , fts = fts
 
 ; AN ABSOLUTE CUTOFF AT ABOUT 3SIGMA FOR A SIGNIFICANT SUBAMPLE
   if n_elements(abs_noise_cut) eq 0 then $
@@ -161,7 +162,7 @@ pro flag_noisy_spectra $
        
        loadct, 0, /silent
        reversect
-       @define_hera_pixels.bat
+       @define_hera_pixels.pro
        !p.multi=[0,5,4]
        for j = 0, npix-1 do begin
 

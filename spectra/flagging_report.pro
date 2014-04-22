@@ -1,8 +1,9 @@
 pro flagging_report $
    , list_file $
-   , tag = tag
+   , tag = tag $
+   , fts = fts
 
-  @define_hera_pixels.bat
+  @define_hera_pixels.pro
 
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
 ; READ LIST OF DATA FILES

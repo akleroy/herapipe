@@ -4,14 +4,15 @@ pro make_and_subtract_reference $
    , equal_weight = equal_weight $
    , median = use_median $
    , min_ref = min_ref_size $
-   , max_ref = max_ref_size
+   , max_ref = max_ref_size $
+   , fts=fts
   
 ; %&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&
 ; SET DEFAULTS, CHECK INPUT
 ; %&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&
 
 ; DEFINE THE HERA PIXELS
-@define_hera_pixels.bat
+@define_hera_pixels.pro
   
 ; DEFINE A "LARGE TIME STEP" IN SECONDS (WE CHECK THE TIME GAP BETWEEN
 ; SUCCESSIVE DATA DUMPS AND DATA BEFORE/AFTER SUCH A STEP CANNOT BE

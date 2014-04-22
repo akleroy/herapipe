@@ -1,12 +1,13 @@
 pro measure_scan_angle $
    , list_file $
-   , tag = tag
+   , tag = tag $
+   , fts = fts
 
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
 ; DEFINE THE HERA PIXELS
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
   
-  @define_hera_pixels.bat
+  @define_hera_pixels.pro
 
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
 ; READ LIST OF DATA FILES

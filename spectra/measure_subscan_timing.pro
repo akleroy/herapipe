@@ -1,7 +1,10 @@
 pro measure_subscan_timing $
    , list_file $
-   , tag = tag
+   , tag = tag $
+   , fts = fts
   
+  @define_hera_pixels.pro
+
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
 ; READ LIST OF DATA FILES
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
@@ -50,7 +53,7 @@ pro measure_subscan_timing $
            this_ss_one_pix = $
               where((data.scan eq uniq_scans[j]) and $
                     (data.subscan eq uniq_subscans[k]) and $
-                    (data.telescop eq '30M-W01-1H01'), one_pix_ct)
+                    (data.telescop eq pixel_list[0]), one_pix_ct)
            
            if ss_ct eq 0 then continue
 

@@ -1,9 +1,10 @@
 pro noise_report $
    , list_file $
    , tag = tag $
-   , blank = blank
+   , blank = blank $
+   , fts=fts
 
-  @define_hera_pixels.bat
+  @define_hera_pixels.pro
 
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
 ; READ LIST OF DATA FILES
