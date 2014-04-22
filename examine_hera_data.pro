@@ -4,7 +4,8 @@ pro examine_hera_data, file $
                        , sm=sm $
                        , median=use_med $
                        , pos = pos $
-                       , rad = rad
+                       , rad = rad $
+                       , fts = fts
 
 
 ;+
@@ -71,7 +72,7 @@ pro examine_hera_data, file $
 ;
 ;-
 
-  @define_hera_pixels.bat
+  @define_hera_pixels.pro
 
 ; %&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&
 ; SOME SMART DEFAULTS
