@@ -6,13 +6,14 @@ pro solve_for_gains $
    , prev_mask_3d = prev_mask_3d $
    , gain_ascii_file = gain_ascii_file $
    , report = report $
-   , show = show
+   , show = show $
+   , fts = fts
 
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
 ; SET DEFAULTS
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
 
-  @define_hera_pixels.bat
+  @define_hera_pixels.pro
 
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
 ; READ THE PREVIOUS DATA CUBE AND THE MASK
