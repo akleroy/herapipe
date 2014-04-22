@@ -108,7 +108,9 @@ pro spectra_pipeline $
    , goto_fft = goto_fft $
    , goto_fit = goto_fit $
    , goto_rej = goto_rej $
-   , just = just
+   , just = just $
+;  ARE WE USING THE FTS?
+   , fts = fts
 
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%%&%
 ; DEFAULTS AND ERROR CHECKING
@@ -343,7 +345,8 @@ pro spectra_pipeline $
         , tag = tag $
         , equal_weight = equal_weight_ref $
         , relaxed = relaxed_referencing $
-        , sliding_window = sliding_window
+        , sliding_window = sliding_window $
+        , fts=fts
   endif
 
   if keyword_set(just) then return
@@ -439,7 +442,8 @@ pro spectra_pipeline $
         , degree = degree $
         , show = show $
         , smooth_in_time = 0 $
-        , /smooth_in_vel
+        , /smooth_in_vel $
+        , fts=fts
     
      sub_base_fit $
         , orig_data_file $
@@ -532,7 +536,8 @@ pro spectra_pipeline $
      noise_report $
         , orig_data_file $
         , tag = tag $
-        , /blank
+        , /blank $
+        , fts=fts
 
   endif
 

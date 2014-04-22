@@ -104,7 +104,9 @@ pro cube_pipeline $
    , goto_plait = goto_plait $
    , goto_noise = goto_noise $
    , goto_mask  = goto_mask $
-   , just = just
+   , just = just $
+;  ARE WE USING THE FTS
+   , fts=fts
 
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%%&%
 ; DEFAULTS AND ERROR CHECKING ON USER INPUT
@@ -283,7 +285,8 @@ pro cube_pipeline $
         , prev_mask_3d = prev_mask_3d $
         , gain_ascii_file = gain_ascii_file $
         , report = report $
-        , show = show     
+        , show = show $
+        , fts=fts
 
   endif
 
