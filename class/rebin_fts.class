@@ -1,0 +1,37 @@
+! rebin_fts
+
+! PURPOSE
+
+! Rebin and downsample an FTS data set by a factor
+
+! SYNTAX
+
+! @ rebin_fts input_file output_file factor
+
+! tell CLASS to be quiet
+sic MESSAGE CLASS S=FE
+
+set angle sec
+
+say Rebinning &1 to CLASS file &2 with factor &3
+
+file in &1
+
+find /telescope 30M-F0*
+
+file out &2 single /overwrite
+
+for i 1 to found
+
+    get next
+
+    ! SET REST FREQUENCY TO 12CO(2-1)
+    modify frequency 230538.000
+
+    ! SMOOTH FTS 195kHz DATA
+    smooth box &3
+
+    ! WRITE TO THE OUTPUT FILE
+    write    
+
+next
