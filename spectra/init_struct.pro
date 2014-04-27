@@ -18,7 +18,8 @@ pro init_struct $
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
 
   readcol, list_file, orig_name, working_name $
-           , format='A,A', /silent
+           , format='A,A', /silent $
+           , comment="#"
   orig_name = strcompress(orig_name, /remove_all)
   working_name = strcompress(working_name, /remove_all)
   ndata = n_elements(orig_name)

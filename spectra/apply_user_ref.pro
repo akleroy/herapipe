@@ -18,7 +18,8 @@ pro apply_user_ref $
 
   readcol, list_file $
            , working_name, already_ref_sub, ref_defn_file $
-           , format='X,A,A,A', /silent
+           , format='X,A,A,A', /silent $
+           , comment="#"
   working_name = strcompress(working_name, /remove_all)
   ndata = n_elements(working_name)
   already_ref_sub = strupcase(strcompress(already_ref_sub, /remove_all))
@@ -56,7 +57,8 @@ pro apply_user_ref $
 ;    READ THE USER-DEFINED FILE
      readcol, ref_defn_file[i] $
               , ref_subscan, ref_scanang, ref_time $
-              , format='A,A,A', /silent
+              , format='A,A,A', /silent $
+              , comment="#"
      ref_subscan = strcompress(ref_subscan,/remove_all)
      ref_scanang = strcompress(ref_scanang,/remove_all)
      ref_time = strcompress(ref_time,/remove_all)

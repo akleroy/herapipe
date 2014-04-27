@@ -19,7 +19,8 @@ pro apply_user_flags $
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
 
   readcol, list_file, working_name $
-           , format='X,A', /silent
+           , format='X,A', /silent $
+           , comment="#"
   data_name = strcompress(working_name, /remove_all)
   ndata = n_elements(working_name)
 
@@ -33,7 +34,8 @@ pro apply_user_flags $
               , bad_data, bad_pixel $
               , bad_scan_lo, bad_scan_hi $
               , bad_chan_lo, bad_chan_hi $
-              , count = num_bad_line
+              , count = num_bad_line $
+              , comment="#"
      if num_bad_line gt 0 then begin
         bad_data = strcompress(bad_data, /remove_all)
         bad_pixel = strcompress(bad_pixel, /remove_all)

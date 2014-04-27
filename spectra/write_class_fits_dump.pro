@@ -22,7 +22,8 @@ pro write_class_fits_dump $
 
 ; READ THE DATA FILE. FORMAT IN THIS CASE: DIRECTORY INPUT OUTPUT
   readcol, list_file, format='A,A,A' $
-           , directory, input_file, output_file
+           , directory, input_file, output_file $
+           , comment="#"
 
 ; PROCESS STRINGS ASSUMING OUR STANDARD DIRECTORY STRUCTURE
   directory = '../'+strcompress(directory, /remove_all)+'/raw/'

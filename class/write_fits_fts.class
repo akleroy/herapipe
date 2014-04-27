@@ -19,6 +19,6 @@ file in &1
 
 find /telescope 30M-F0*
 
-! sys "rm &2"
+sys "rm &2"
 fits write &2 /mode index /bits -32
 
