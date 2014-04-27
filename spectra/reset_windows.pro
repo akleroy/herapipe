@@ -13,7 +13,7 @@ pro reset_windows $
   ndata = n_elements(working_name)
 
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
-; LOOP OVER DATA FILES AND CALCULATE COORDINATES FOR EACH
+; LOOP OVER DATA FILES AND RESET BASELINE MASKING WINDOWS
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
 
   for i = 0, ndata-1 do begin
