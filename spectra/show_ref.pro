@@ -11,7 +11,7 @@ pro show_ref $
 
   readcol, list_file, working_name $
            , format='X,A', /silent $
-           , comment="#"
+           , comment="#", /silent
   data_name = strcompress(working_name, /remove_all)
   ndata = n_elements(working_name)
 
@@ -25,7 +25,7 @@ pro show_ref $
      need_to_write = 0
 
 ;    SHOW THE LOCATIONS OF THE ON/OFF MEASUREMENTS
-     loadct, 0
+     loadct, 0, /silent
      reversect
      
 ;    READ THE DATA
