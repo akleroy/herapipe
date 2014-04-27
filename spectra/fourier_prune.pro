@@ -169,7 +169,7 @@ pro fourier_prune $
 
      if keyword_set(show) then begin
 
-        loadct, 0
+        loadct, 0, /silent
         reversect
 
 ;       PLOT THE POWER SPECTRUM, OVERPLOT THE MEAN, THEN RE-PLOT
