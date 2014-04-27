@@ -11,7 +11,7 @@ pro clean_up_cube $
 ; READ IN DATA
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
 
-  cube = readfits(input_file, hdr)
+  cube = readfits(input_file, hdr, /silent)
 
 ; MEASURE THE SIZE OF THE CUBE
   sz = size(cube)
@@ -55,7 +55,7 @@ pro clean_up_cube $
   if n_elements(coverage_thresh) gt 0 and cov_ct eq 1 then begin
 
 ;    READ THE COVERAGE FILE AND CHECK ITS SIZE AGAINST THE CUBE
-     coverage = readfits(coverage_file, coverage_hdr)
+     coverage = readfits(coverage_file, coverage_hdr, /silent)
 
      cov_sz = size(coverage)
      
