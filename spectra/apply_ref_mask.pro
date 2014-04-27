@@ -26,7 +26,7 @@ pro apply_ref_mask $
      return
   endif
   
-  mask = readfits(ref_mask_file, mask_hdr)
+  mask = readfits(ref_mask_file, mask_hdr, /silent)
 
 ; ... NOTE THE DIMENSIONS
   sz_mask = size(mask)
