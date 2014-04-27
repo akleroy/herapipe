@@ -169,7 +169,7 @@ pro hera_base_sub $
         if blank_ct gt 0 then pix_data[blank] = !values.f_nan
 
 ;       SMOOTH IN TIME (IF REQUESTED)
-        if keyword_set(smooth_in_vel) then begin
+        if keyword_set(smooth_in_time) then begin
            
 ;          TRANSLATE THE SMOOTHING KERNEL IN SECONDS INTO CHANNELS
            time_kern = ceil(time_smooth_sec / median(data[pix_ind].obstime))
