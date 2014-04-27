@@ -13,7 +13,7 @@ pro reset_references $
   ndata = n_elements(working_name)
 
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
-; LOOP OVER DATA FILES AND CALCULATE COORDINATES FOR EACH
+; LOOP OVER DATA FILES AND SET REFERENCE TO 'ON'
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
 
   for i = 0, ndata-1 do begin
