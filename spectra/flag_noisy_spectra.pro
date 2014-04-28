@@ -10,8 +10,13 @@ pro flag_noisy_spectra $
    , fts = fts
 
 ; AN ABSOLUTE CUTOFF AT ABOUT 3SIGMA FOR A SIGNIFICANT SUBAMPLE
-  if n_elements(abs_noise_cut) eq 0 then $
-     abs_noise_cut = 1.0
+  if n_elements(abs_noise_cut) eq 0 then begin
+;    ... A GOOD VALUE FOR WILMA
+     if keyword_set(fts) eq 0 then $
+        abs_noise_cut = 1.0
+     if keyword_set(fts) then $
+        abs_noise_cut = 1.25
+  endif
 
 ; A LESS STRINGENT STATISTICAL CUTOFF
   sigma_cut = 3. 
@@ -73,16 +78,22 @@ pro flag_noisy_spectra $
 
 ;    BLANK THE FITTING WINDOWS, IF REQUESTED
      if keyword_set(blank) then begin
-        win_arr = extract_windows(data[fit_ind])
-        win_sz = size(win_arr)
+
+        if max(data.nwindows) gt 0 then begin
+
+           win_arr = extract_windows(data[fit_ind])
+           win_sz = size(win_arr)
         
-        for k = 0L, fit_ct-1 do begin
-           for m = 0, win_sz[1]-1, 2 do begin
-              blank = where(vaxis ge win_arr[m,k] and $
-                            vaxis le win_arr[m+1,k], blank_ct)
-              if blank_ct gt 0 then im[blank,k] = !values.f_nan
+           for k = 0L, fit_ct-1 do begin
+              for m = 0, win_sz[1]-1, 2 do begin
+                 blank = where(vaxis ge win_arr[m,k] and $
+                               vaxis le win_arr[m+1,k], blank_ct)
+                 if blank_ct gt 0 then im[blank,k] = !values.f_nan
+              endfor
            endfor
-        endfor
+
+        endif
+
      endif
 
 ;    SMOOTH THE DATA IN TIME, IF REQUESTED
@@ -179,7 +190,12 @@ pro flag_noisy_spectra $
 
           loadct, 0, /silent
           reversect
-          fasthist, rat[ind] < 1.2, title=pixel_list[j], charsize=1.5 $
+
+          if keyword_set(fts) then $
+             cut = 1.5 $
+          else $
+             cut = 1.2
+          fasthist, rat[ind] < cut, title=pixel_list[j], charsize=1.5 $
                     , /poly
 
           oplot, abs_noise_cut*[1.,1.], [-1e6,1e6], color=getcolor('red')

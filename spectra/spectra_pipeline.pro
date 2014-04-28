@@ -485,7 +485,7 @@ pro spectra_pipeline $
      apply_user_flags $
         , orig_data_file $
         , tag = tag $
-        , bad_data_file = bad_data_file         
+        , bad_data_file = bad_data_file
 
 ;    FLAG PATHOLOGICAL SPECTRA (BLANK, HIGH TSYS)
      flag_pathological_spectra $
@@ -514,7 +514,8 @@ pro spectra_pipeline $
            , show = show $
            , report = report $
            , smooth = smooth_for_flagging[i] $
-           , /blank
+           , /blank $
+           , fts = fts
      endfor
 
 ;    FLAG NOISY SPECTRA (BASED ON RMS ABOUT THE BASELINE FIT)
@@ -526,13 +527,15 @@ pro spectra_pipeline $
            , report = report $
            , smooth = smooth_for_flagging[i] $
            , relative_noise_only = relative_noise_only $
-           , /blank
+           , /blank $
+           , fts = fts
      endfor
 
 ;    MAKE A QUICK REPORT ON THE DATA FLAGGING
      flagging_report $
         , orig_data_file $
-        , tag = tag
+        , tag = tag $
+        , fts = fts
 
 ;    MEASURE THE NOISE AND ASSESS ITS AVERAGING PROPERTIES
      noise_report $
