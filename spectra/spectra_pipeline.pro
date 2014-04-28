@@ -280,7 +280,8 @@ pro spectra_pipeline $
 ; ... ESTIMATE THE POSITION ANGLE OF EACH SCAN
   measure_scan_angle $
      , orig_data_file $
-     , tag = tag 
+     , tag = tag $
+     , fts = fts
 
 ; ... MEASURE THE TIMING OF INDIVIDUAL SUBSCANS
   measure_subscan_timing $

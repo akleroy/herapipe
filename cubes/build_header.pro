@@ -140,13 +140,14 @@ function build_header $
            , yctr = yctr)
 
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
-; IF WE WANT TO PLAIT, WORK OUT OUT THE SCAN ANGLES
+; IF WE WANT TO PLAIT, WORK OUT THE SCAN ANGLES
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
 
   if keyword_set(split_by_angle) then begin
      uniq_angles = ang[uniq(ang, sort(ang))]
      n_ang = n_elements(uniq_angles)     
-     message, 'I found '+string(n_ang)+' unique scan angles.', /info     
+     message, 'I found '+strcompress(string(n_ang),/remove)+$
+              ' unique scan angles.', /info     
   endif
 
   return, target_header

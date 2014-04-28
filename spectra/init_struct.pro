@@ -75,7 +75,7 @@ pro init_struct $
                      ), sz[1])
      
 ;    COPY THE VALUES FROM THE OLD STRUCTURE TO THE NEW STRUCTURE
-     struct_assign, data, new_data
+     struct_assign, data, new_data, /nozero
 
 ;    NOW OVERWRITE THE OLD DATA WITH THE NEW DATA
      data = new_data

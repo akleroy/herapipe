@@ -9,7 +9,7 @@ function is_ref_subtracted $
   readcol, list_file $
            , working_name, already_ref_sub $
            , format='X,A,A' $
-           , comment="#"
+           , comment="#", /silent
   working_name = strcompress(working_name, /remove_all)
   ndata = n_elements(working_name)
   already_ref_sub = strupcase(strcompress(already_ref_sub, /remove_all))
