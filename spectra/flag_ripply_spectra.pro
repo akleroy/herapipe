@@ -62,16 +62,22 @@ pro flag_ripply_spectra $
 
 ;    BLANK THE FITTING WINDOWS, IF REQUESTED
      if keyword_set(blank) then begin
-        win_arr = extract_windows(data[fit_ind])
-        win_sz = size(win_arr)
         
-        for k = 0L, fit_ct-1 do begin
-           for m = 0, win_sz[1]-1, 2 do begin
-              blank = where(vaxis ge win_arr[m,k] and $
-                            vaxis le win_arr[m+1,k], blank_ct)
-              if blank_ct gt 0 then im[blank,k] = !values.f_nan
+        if max(data.nwindows) gt 0 then begin
+        
+           win_arr = extract_windows(data[fit_ind])
+           win_sz = size(win_arr)
+        
+           for k = 0L, fit_ct-1 do begin
+              for m = 0, win_sz[1]-1, 2 do begin
+                 blank = where(vaxis ge win_arr[m,k] and $
+                               vaxis le win_arr[m+1,k], blank_ct)
+                 if blank_ct gt 0 then im[blank,k] = !values.f_nan
+              endfor
            endfor
-        endfor
+
+        endif
+
      endif
 
 ;    SMOOTH THE DATA IN TIME, IF REQUESTED

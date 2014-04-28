@@ -250,6 +250,7 @@ pro spectra_pipeline $
 
   init:
 
+  message, 'Initializing output file.', /info
   message, 'Time stamp: ', /info
   spawn, 'date'
 
@@ -364,16 +365,16 @@ pro spectra_pipeline $
 ;
 
   sub:
-;  message, 'Subtracting reference spectra.',/info
-;  message, 'Time stamp: ', /info
-;  spawn, 'date'
+  message, 'Subtracting reference spectra.',/info
+  message, 'Time stamp: ', /info
+  spawn, 'date'
 
 ; SUBTRACT THE REFERENCE SPECTRUM FROM THE 
-;  subtract_reference $
-;     , orig_data_file $
-;    , tag = tag
-;
-; if keyword_set(just) then return
+  subtract_reference $
+     , orig_data_file $
+     , tag = tag
+
+  if keyword_set(just) then return
 
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%%&%
 ; FFT PRUNING

@@ -115,20 +115,25 @@ pro hera_base_fit $
         if off_ct gt 0 then $
            pix_data[*,off_ind] = !values.f_nan
 
-;       EXTRACT THE WINDOWS AS AN ARRAY OF LO-HI x NSPEC 
-        win_arr = extract_windows(data[pix_ind])
-;        win_arr = win_arr_big[pix_ind,*]
-        win_sz = size(win_arr)
+        if max(data.nwindows) gt 0 then begin
 
-;       BLANK THE DATA INSIDE THE WINDOWS
-        vaxis_arr = vaxis # (fltarr(pix_ct)+1.)
-        for m = 0, win_sz[1]-1, 2 do begin
-           win_arr_lo = (fltarr(n_chan) + 1.) # win_arr[m,*]
-           win_arr_hi = (fltarr(n_chan) + 1.) # win_arr[m+1,*]
-           blank = where(vaxis_arr ge win_arr_lo and $
-                         vaxis_arr le win_arr_hi, blank_ct)
-           if blank_ct gt 0 then pix_data[blank] = !values.f_nan
-        endfor
+;          EXTRACT THE WINDOWS AS AN ARRAY OF LO-HI x NSPEC 
+           win_arr = extract_windows(data[pix_ind])
+
+;          win_arr = win_arr_big[pix_ind,*]
+           win_sz = size(win_arr)
+
+;          BLANK THE DATA INSIDE THE WINDOWS
+           vaxis_arr = vaxis # (fltarr(pix_ct)+1.)
+           for m = 0, win_sz[1]-1, 2 do begin
+              win_arr_lo = (fltarr(n_chan) + 1.) # win_arr[m,*]
+              win_arr_hi = (fltarr(n_chan) + 1.) # win_arr[m+1,*]
+              blank = where(vaxis_arr ge win_arr_lo and $
+                            vaxis_arr le win_arr_hi, blank_ct)
+              if blank_ct gt 0 then pix_data[blank] = !values.f_nan
+           endfor
+
+        endif
 
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
 ; APPLY ANY DESIRED SMOOTHING, KEEPING TRACK OF WEIGHTS

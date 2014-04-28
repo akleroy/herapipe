@@ -52,7 +52,8 @@ pro sub_base_fit $
 ;    LOOP OVER SPECTRA
      for j = 0L, fit_ct-1 do begin
         coeffs = dblarr(data[fit_ind[j]].base_degree+1)
-        if data[fit_ind[j]].base_coeffs eq '' then continue           
+        if strcompress(data[fit_ind[j]].base_coeffs eq '',/rem) then $
+           continue           
         reads, data[fit_ind[j]].base_coeffs, coeffs
         base = double(vaxis*0.0)
         for k = 0, data[fit_ind[j]].base_degree do $

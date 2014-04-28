@@ -2,6 +2,9 @@ function extract_windows, data
 
   max_nwindows = max(data.nwindows)
 
+  if max_windows eq 0 then $
+     return, !values.f_nan
+
   sz = size(data)
 
   win_arr = fltarr(max_nwindows*2,sz[1])*!values.f_nan
