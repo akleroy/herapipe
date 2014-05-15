@@ -1,6 +1,7 @@
 pro init_struct $
    , list_file $
-   , tag = tag
+   , tag = tag $
+   , working_dir = working_dir
 
 ;+
 ;
@@ -97,8 +98,8 @@ pro init_struct $
 
 ;    WRITE OUT THE DATA 
 ;    (DELETING THE OLD VERSION TO KEEP MWRFITS FROM APPENDING)
-     outdir = '../spectra/'
-     outfile = outdir+working_name[i]+tag+'.processed.fits'
+     outdir = working_dir+'spectra/'
+     outfile = outdir+working_name[i]+'_'+tag+'.processed.fits'
      spawn, 'rm '+outfile
      mwrfits, data, outfile, hdr
   endfor

@@ -1,6 +1,7 @@
 pro show_ref $
    , list_file $
    , tag = tag $
+   , working_dir = working_dir $
    , pause = do_pause $
    , delay = delay $
    , report = report
@@ -29,8 +30,8 @@ pro show_ref $
      reversect
      
 ;    READ THE DATA
-     indir = '../spectra/'
-     infile = indir+working_name[i]+tag+'.processed.fits'
+     indir = working_dir+'spectra/'
+     infile = indir+working_name[i]+'_'+tag+'.processed.fits'
      dummy = file_search(infile, count=count)
      if count eq 0 then begin
         message, 'File not found '+string(working_name[i])+'. Skipping.', /info
@@ -70,7 +71,7 @@ pro show_ref $
 
      if keyword_set(report) then begin
         im = tvrd(true=1)
-        write_jpeg, '../reports/onoff_'+working_name[i]+'.jpeg', im, true=1
+        write_jpeg, working_dir+'reports/onoff_'+working_name[i]+'.jpeg', im, true=1
      endif
 
   endfor

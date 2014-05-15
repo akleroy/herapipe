@@ -72,6 +72,7 @@
 
 pro spectra_pipeline $
 ;  GENERAL INPUT/OUTPUT
+   , working_dir = working_dir $
    , identifier = tag $
    , orig_data_file = orig_data_file $
    , bad_data_file = bad_data_file $
@@ -145,8 +146,14 @@ pro spectra_pipeline $
 ; Directory structure
 ; ---------------------------------------------------------------------
 
+; ROOT WORKING DIRECTORY (ASSUME WE ARE IN CODE/ AND GO UP ONE)
+  if n_elements(working_dir) eq 0 then begin
+     message, 'No working directory specified. Assuming ../', /info
+     working_dir = "../"
+  endif
+
 ; OUTPUT DIRECTORY FOR REPORTS/IMAGES
-  report_dir = '../reports/'       
+  report_dir = working_dir+'reports/'       
 ; CHECK THAT THE DIRECTORY IS THERE...
   test = file_search(report_dir, count = ct)
   if ct ne 1 then begin
@@ -257,36 +264,42 @@ pro spectra_pipeline $
 ; ... MAKE SURE THE STRUCTURE HAS THE NEEDED FIELDS
   init_struct $
      , orig_data_file $
+     , working_dir = working_dir $
      , tag = tag
 
 ; ... FILL IN POSITION AND VELOCITY COORDINATES
   fill_in_coords $
      , orig_data_file $
      , tag = tag $
+     , working_dir = working_dir $
      , force_v0 = force_v0
 
 ; ... APPLY ANY USER-SUPPLIED FLAGGING
   apply_user_flags $
      , orig_data_file $
      , tag = tag $
+     , working_dir = working_dir $
      , bad_data_file = bad_data_file
 
 ; ... FLAG PATHOLOGICAL SPECTRA (BLANK, HIGH TSYS)
   flag_pathological_spectra $
      , orig_data_file $
      , tag = tag $
+     , working_dir = working_dir $
      , allow_high_tsys = allow_high_tsys
 
 ; ... ESTIMATE THE POSITION ANGLE OF EACH SCAN
   measure_scan_angle $
      , orig_data_file $
      , tag = tag $
+     , working_dir = working_dir $
      , fts = fts
 
 ; ... MEASURE THE TIMING OF INDIVIDUAL SUBSCANS
   measure_subscan_timing $
      , orig_data_file $
-     , tag = tag 
+     , tag = tag  $
+     , working_dir = working_dir
 
   if keyword_set(just) then return
 
@@ -309,11 +322,13 @@ pro spectra_pipeline $
 ;    ... RESET THE REFERENCES
      reset_references $
         , orig_data_file $
-        , tag = tag
+        , tag = tag $
+        , working_dir = working_dir
 
 ;    ... FIRST CHECK WHETHER A SUBTRACTION IS NEEDED     
      all_already_subtracted = $
-        is_ref_subtracted(orig_data_file, tag = tag)
+        is_ref_subtracted(orig_data_file, tag = tag $
+                          , working_dir = working_dir)
 
 ;    ... TURN OFF THE SUBTRACTION IF ALL DATA ALREADY PROCESSED
      if all_already_subtracted then sub_reference = 0
@@ -325,18 +340,21 @@ pro spectra_pipeline $
      apply_ref_mask $
         , orig_data_file $
         , tag = tag $
+        , working_dir = working_dir $
         , ref_mask = ref_mask_file
 
 ;    ... THEN APPLY ANY USER-SPECIFIED RULES FOR REFERENCES
      apply_user_ref $
         , orig_data_file $
-        , tag = tag
+        , tag = tag $
+        , working_dir = working_dir
 
 ;    ... ILLUSTRATE THE REFERENCES
      if keyword_set(show) then begin
         show_ref $
            , orig_data_file $
            , tag = tag $
+           , working_dir = working_dir $
            , report = report $
            , /pause
      endif
@@ -345,6 +363,7 @@ pro spectra_pipeline $
      make_reference_spectra $
         , orig_data_file $
         , tag = tag $
+        , working_dir = working_dir $
         , equal_weight = equal_weight_ref $
         , relaxed = relaxed_referencing $
         , sliding_window = sliding_window $
@@ -373,7 +392,8 @@ pro spectra_pipeline $
 ; SUBTRACT THE REFERENCE SPECTRUM FROM THE 
   subtract_reference $
      , orig_data_file $
-     , tag = tag
+     , tag = tag $
+     , working_dir = working_dir
 
   if keyword_set(just) then return
 
@@ -398,6 +418,7 @@ pro spectra_pipeline $
      fourier_prune $
         , orig_data_file $
         , tag = tag $
+        , working_dir = working_dir $
         , bad_channels =  bad_fft_chan $
         , show = show $
         , report = report $
@@ -426,12 +447,14 @@ pro spectra_pipeline $
 ; FIRST READ IN THE SPECTRAL BASELINE WINDOWS
   reset_windows $
      , orig_data_file $
-     , tag = tag
+     , tag = tag $
+     , working_dir = working_dir
 
   for i = 0, n_elements(window_root)-1 do begin
      read_in_windows $
         , orig_data_file $
         , tag = tag $
+        , working_dir = working_dir $
         , window_root = window_root[i]
   endfor
 
@@ -441,6 +464,7 @@ pro spectra_pipeline $
      hera_base_fit $
         , orig_data_file $
         , tag = tag $
+        , working_dir = working_dir $
         , degree = degree $
         , show = show $
         , smooth_in_time = 0 $
@@ -450,6 +474,7 @@ pro spectra_pipeline $
      sub_base_fit $
         , orig_data_file $
         , tag = tag $
+        , working_dir = working_dir $
         , show = show
      
   endif
@@ -479,18 +504,21 @@ pro spectra_pipeline $
 ;    RESET THE FLAGGING
      reset_flags $
         , orig_data_file $
-        , tag = tag
+        , tag = tag $
+        , working_dir = working_dir
 
 ; ... APPLY ANY USER-SUPPLIED FLAGGING
      apply_user_flags $
         , orig_data_file $
         , tag = tag $
+        , working_dir = working_dir $
         , bad_data_file = bad_data_file
 
 ;    FLAG PATHOLOGICAL SPECTRA (BLANK, HIGH TSYS)
      flag_pathological_spectra $
         , orig_data_file $
         , tag = tag $
+        , working_dir = working_dir $
         , allow_high_tsys = allow_high_tsys
 
 ;    FLAG UNEVEN SPECTRA
@@ -499,8 +527,8 @@ pro spectra_pipeline $
            flag_uneven_spectra $
               , orig_data_file $
               , tag = tag $
+              , working_dir = working_dir $
               , show = show $
-              , report = report $
               , smooth = smooth_for_flagging[i] $
               , wide = (narrow_only eq 0)
         endfor
@@ -511,6 +539,7 @@ pro spectra_pipeline $
         flag_ripply_spectra $
            , orig_data_file $
            , tag = tag $
+           , working_dir = working_dir $
            , show = show $
            , report = report $
            , smooth = smooth_for_flagging[i] $
@@ -523,6 +552,7 @@ pro spectra_pipeline $
         flag_noisy_spectra $
            , orig_data_file $
            , tag = tag $
+           , working_dir = working_dir $
            , show = show $
            , report = report $
            , smooth = smooth_for_flagging[i] $
@@ -535,12 +565,14 @@ pro spectra_pipeline $
      flagging_report $
         , orig_data_file $
         , tag = tag $
+        , working_dir = working_dir $
         , fts = fts
 
 ;    MEASURE THE NOISE AND ASSESS ITS AVERAGING PROPERTIES
      noise_report $
         , orig_data_file $
         , tag = tag $
+        , working_dir = working_dir $
         , /blank $
         , fts=fts
 

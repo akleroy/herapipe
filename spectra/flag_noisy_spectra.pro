@@ -7,6 +7,7 @@ pro flag_noisy_spectra $
    , report = report $
    , relative_noise_only = relative_noise_only $
    , abs_noise_cute = abs_noise_cut $
+   , working_dir = working_dir $
    , fts = fts
 
 ; AN ABSOLUTE CUTOFF AT ABOUT 3SIGMA FOR A SIGNIFICANT SUBAMPLE
@@ -38,8 +39,8 @@ pro flag_noisy_spectra $
   for i = 0, ndata-1 do begin
      
 ;    READ THE DATA
-     indir = '../spectra/'
-     infile = indir+working_name[i]+tag+'.processed.fits'
+     indir = working_data+'spectra/'
+     infile = indir+working_name[i]+'_'+tag+'.processed.fits'
      dummy = file_search(infile, count=count)
      if count eq 0 then begin
         message, 'File not found '+string(working_name[i])+'. Skipping.', /info
@@ -203,7 +204,7 @@ pro flag_noisy_spectra $
           oplot, sigma_cut_val*[1.,1.], [-1e6,1e6], color=getcolor('magenta')
 
           im = tvrd(true=1)
-          write_jpeg, '../reports/flag_noise_'+working_name[i]+'.jpeg' $
+          write_jpeg, working_dir+'reports/flag_noise_'+working_name[i]+'.jpeg' $
                       , im, true=1
 
        endfor

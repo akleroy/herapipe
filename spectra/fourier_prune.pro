@@ -41,8 +41,8 @@ pro fourier_prune $
   for i = 0, ndata-1 do begin
 
 ;    READ THE DATA
-     indir = '../spectra/'
-     infile = indir+working_name[i]+tag+'.processed.fits'
+     indir = working_dir+'spectra/'
+     infile = indir+working_name[i]+'_'+tag+'.processed.fits'
      dummy = file_search(infile, count=count)
      if count eq 0 then begin
         message, 'File not found '+string(working_name[i])+'. Skipping.', /info
@@ -205,7 +205,7 @@ pro fourier_prune $
         
         if keyword_set(report) then begin
            im = tvrd(true=1)
-           write_jpeg, '../reports/fft_'+data_name[i]+'.jpeg', im, true=1
+           write_jpeg, working_dir+'reports/fft_'+data_name[i]+'.jpeg', im, true=1
         endif
 
      endif
@@ -213,7 +213,7 @@ pro fourier_prune $
 ;    WRITE THE POWER SPECTRUM TO DISK IN A TEXT FILE
      if keyword_set(report) then begin
         get_lun, lun
-        openw, lun, '../reports/fft_spec'+data_name[i]+'.txt'
+        openw, lun, working_dir+'reports/fft_spec'+data_name[i]+'.txt'
         printf,lun,'Column 1: Frequency [MHz^-1]'
         printf,lun,'Power: (abs(FFT)^2 of spectrum in TA*)'
         for jj = 0, n_elements(power_spec_xaxis)-1 do $

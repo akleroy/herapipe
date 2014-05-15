@@ -1,7 +1,8 @@
 pro flagging_report $
    , list_file $
    , tag = tag $
-   , fts = fts
+   , fts = fts $
+   , working_dir = working_dir
 
   @define_hera_pixels.pro
 
@@ -22,8 +23,8 @@ pro flagging_report $
   for i = 0, ndata-1 do begin
      
 ;    READ THE DATA
-     indir = '../spectra/'
-     infile = indir+working_name[i]+tag+'.processed.fits'
+     indir = working_dir+'spectra/'
+     infile = indir+working_name[i]+'_'+tag+'.processed.fits'
      dummy = file_search(infile, count=count)
      if count eq 0 then begin
         message, 'File not found '+string(working_name[i])+'. Skipping.', /info
@@ -31,7 +32,7 @@ pro flagging_report $
      endif
      data = mrdfits(infile,1,hdr, /silent)
      
-     fname= '../reports/flagging_'+working_name[i]+'.txt'
+     fname= working_dir+'reports/flagging_'+working_name[i]+'.txt'
      openw, 1,  fname
 
      for j = 0, npix-1 do begin

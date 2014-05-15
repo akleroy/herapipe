@@ -1,7 +1,8 @@
 pro flag_pathological_spectra $
    , list_file $
    , tag = tag $
-   , allow_high_tsys = allow_high_tsys
+   , allow_high_tsys = allow_high_tsys $
+   , working_dir = working_dir
 
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
 ; READ LIST OF DATA FILES
@@ -25,8 +26,8 @@ pro flag_pathological_spectra $
   for i = 0, ndata-1 do begin
      
 ;    READ THE DATA
-     indir = '../spectra/'
-     infile = indir+working_name[i]+tag+'.processed.fits'
+     indir = working_dir+'spectra/'
+     infile = indir+working_name[i]+'_'+tag+'.processed.fits'
      dummy = file_search(infile, count=count)
      if count eq 0 then begin
         message, 'File not found '+string(working_name[i])+'. Skipping.', /info

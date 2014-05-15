@@ -1,6 +1,7 @@
 pro hera_base_fit $
    , list_file $
    , tag = tag $
+   , working_dir = working_dir $
    , degree = degree $
    , edge = edge $
    , smooth_in_time = smooth_in_time $
@@ -61,8 +62,8 @@ pro hera_base_fit $
   for i = 0, ndata-1 do begin
 
 ;    READ THE DATA
-     indir = '../spectra/'
-     infile = indir+working_name[i]+tag+'.processed.fits'
+     indir = working_dir+'spectra/'
+     infile = indir+working_name[i]+'_'+tag+'.processed.fits'
      dummy = file_search(infile, count=count)
      if count eq 0 then begin
         message, 'File not found '+string(working_name[i])+'. Skipping.', /info

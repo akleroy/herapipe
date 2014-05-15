@@ -1,6 +1,7 @@
 function is_ref_subtracted $
    , list_file $
-   , tag = tag
+   , tag = tag $
+   , working_dir = working_dir
   
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
 ; READ LIST OF DATA
@@ -27,8 +28,8 @@ function is_ref_subtracted $
      need_to_write = 0
 
 ;    READ THE DATA
-     indir = '../spectra/'
-     infile = indir+working_name[i]+tag+'.processed.fits'
+     indir = working_data+'spectra/'
+     infile = indir+working_name[i]+'_'+tag+'.processed.fits'
      dummy = file_search(infile, count=count)
      if count eq 0 then begin
         message, 'File not found '+string(working_name[i])+'. Skipping.', /info

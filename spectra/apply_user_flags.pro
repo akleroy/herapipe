@@ -1,7 +1,8 @@
 pro apply_user_flags $
    , list_file $
    , tag = tag $
-   , bad_data_file = bad_data_file
+   , bad_data_file = bad_data_file $
+   , working_dir = working_dir
   
 ;+
 ;
@@ -59,8 +60,8 @@ pro apply_user_flags $
   for i = 0, ndata-1 do begin
     
 ;    READ THE DATA
-     indir = '../spectra/'
-     infile = indir+working_name[i]+tag+'.processed.fits'
+     indir = working_dir+'spectra/'
+     infile = indir+working_name[i]+'_'+tag+'.processed.fits'
      dummy = file_search(infile, count=count)
      if count eq 0 then begin
         message, 'File not found '+string(working_name[i])+'. Skipping.', /info

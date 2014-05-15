@@ -1,6 +1,7 @@
 pro apply_ref_mask $
    , list_file $
    , tag = tag $
+   , working_dir = working_dir $
    , ref_mask_file=ref_mask_file
 
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
@@ -20,14 +21,16 @@ pro apply_ref_mask $
   if n_elements(ref_mask_file) eq 0 then $
      mask_found = 0 $
   else $
-     dummy = file_search(ref_mask_file, count=mask_found)
+     dummy = file_search(working_dir+ref_mask_file $
+                         , count=mask_found)
 
   if mask_found eq 0 then begin
      message, "No reference mask found. Skipping this step.", /info
      return
   endif
   
-  mask = readfits(ref_mask_file, mask_hdr, /silent)
+  mask = readfits(working_dir+ref_mask_file $
+                  , mask_hdr, /silent)
 
 ; ... NOTE THE DIMENSIONS
   sz_mask = size(mask)
@@ -42,8 +45,8 @@ pro apply_ref_mask $
   for i = 0, ndata-1 do begin
          
 ;    READ THE DATA
-     indir = '../spectra/'
-     infile = indir+working_name[i]+tag+'.processed.fits'
+     indir = working_data+'spectra/'
+     infile = indir+working_name[i]+'_'+tag+'.processed.fits'
      dummy = file_search(infile, count=count)
      if count eq 0 then begin
         message, 'File not found '+string(working_name[i])+'. Skipping.', /info
