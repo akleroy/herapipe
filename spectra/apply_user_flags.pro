@@ -100,7 +100,7 @@ pro apply_user_flags $
 ;       ... TRIVIAL CASE IF WE ARE DISCARDING
            if discard[here] then begin
               data.flagged = data.flagged*0 + 1
-              data.why_flagged += 'H '
+              data.why_flagged += 'U'
               all_bad = 1B
               return
            endif else begin
@@ -177,6 +177,7 @@ pro apply_user_flags $
 ;    WRITE OUT THE DATA TO THE SAME FILE WE READ FROM
 ;    (DELETING THE OLD VERSION TO KEEP MWRFITS FROM APPENDING)
 ;    &$&$&$&$&$&$&$&$&$&$&$&$&$&$&$&$&$&$&$&$&$&$&$&$&$&$&$&$&$&$
+
      outfile = infile
      spawn, 'rm '+outfile
      mwrfits, data, outfile, hdr

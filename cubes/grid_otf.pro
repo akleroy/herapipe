@@ -136,6 +136,8 @@ pro grid_otf $
 ;
 ; 20jul09 - polished, added apodization, updated documentation.
 ;
+; spring14 - some cleanup on pixel size calculation
+;
 ; IF YOU USE THIS AND FIND ERRORS:
 ;
 ; email to aleroy@nrao.edu (no promises, but I want to know)
