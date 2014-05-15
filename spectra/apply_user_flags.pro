@@ -28,24 +28,27 @@ pro apply_user_flags $
 ; READ THE FLAGGING FILE
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
 
+  all_bad = 0
+
   bad_data_file = file_search(bad_data_file, count=ct)
-  if ct gt 0 then begin
-     readcol, bad_data_file[0], format='A,A,A,A,F,F' $
-              , bad_data, bad_pixel $
-              , bad_scan_lo, bad_scan_hi $
-              , bad_chan_lo, bad_chan_hi $
-              , count = num_bad_line $
-              , comment="#"
-     if num_bad_line gt 0 then begin
-        bad_data = strcompress(bad_data, /remove_all)
-        bad_pixel = strcompress(bad_pixel, /remove_all)
-        bad_scan_lo = strcompress(bad_scan_lo, /remove_all)
-        bad_scan_hi = strcompress(bad_scan_hi, /remove_all)
-     endif else begin
-        return
-     endelse
+  if ct eq 0 then begin
+     message, "Did not find a data flagging file. Skipping this step.", /info
+     return
+  endif
+
+  readcol, bad_data_file[0], format='A,A,A,A,F,F' $
+           , bad_data, bad_pixel $
+           , bad_scan_lo, bad_scan_hi $
+           , bad_chan_lo, bad_chan_hi $
+           , count = num_bad_line $
+           , comment="#"
+  if num_bad_line gt 0 then begin
+     bad_data = strcompress(bad_data, /remove_all)
+     bad_pixel = strcompress(bad_pixel, /remove_all)
+     bad_scan_lo = strcompress(bad_scan_lo, /remove_all)
+     bad_scan_hi = strcompress(bad_scan_hi, /remove_all)
   endif else begin
-     all_bad = 0
+     message, "Bad data file appears empty. Skipping this step.", /info
      return
   endelse
 

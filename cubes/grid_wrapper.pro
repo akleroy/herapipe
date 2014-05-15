@@ -17,7 +17,8 @@ pro grid_wrapper $
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
 
   readcol, list_file, working_name $
-           , format='X,A', /silent
+           , format='X,A', /silent $
+           , comment="#"
   data_name = strcompress(working_name, /remove_all)
   ndata = n_elements(working_name)
 
@@ -57,7 +58,7 @@ pro grid_wrapper $
      if keyword_set(apply_gain) then begin
         readcol, gain_file, format='A,A,F,F' $
                  , gain_day, gain_pixel, gain_val, gain_unc $
-                 , count = nlines
+                 , count = nlines, comment="#"
         
 ;       HARDCODE SOME PRUNING
         gain_cap = 1.5

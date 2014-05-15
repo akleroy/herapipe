@@ -138,7 +138,7 @@ pro grid_otf $
 ;
 ; IF YOU USE THIS AND FIND ERRORS:
 ;
-; email to leroy@mpia.de (no promise of service, but I want to know!)
+; email to aleroy@nrao.edu (no promises, but I want to know)
 ; 
 ;-
 
@@ -168,6 +168,10 @@ pro grid_otf $
      if ct eq 0 then $
         message, 'Requires the beam size via keyword or header.'     
   endif
+
+; THE SIZE OF A PIXEL
+  make_axes, target_hdr, ri=ri, di=di  
+  pix_scl = sphdist(ri[1,0], di[1,0], ri[0,0], di[0,0], /deg)  
 
 ; THE CELL SIZE SHOULD BE 1/3 OF THE FWHM OR SMALLER (WARNING ONLY)
   if abs(sxpar(target_hdr,'CDELT1')) gt beam_fwhm/3.0 then $

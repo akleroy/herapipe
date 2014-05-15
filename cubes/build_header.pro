@@ -12,7 +12,8 @@ function build_header $
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
 
   readcol, list_file, working_name $
-           , format='X,A', /silent
+           , format='X,A', /silent $
+           , comment="#"
   data_name = strcompress(working_name, /remove_all)
   ndata = n_elements(working_name)
 
