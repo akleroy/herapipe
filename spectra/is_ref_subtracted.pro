@@ -28,7 +28,7 @@ function is_ref_subtracted $
      need_to_write = 0
 
 ;    READ THE DATA
-     indir = working_data+'spectra/'
+     indir = working_dir+'spectra/'
      infile = indir+working_name[i]+'_'+tag+'.processed.fits'
      dummy = file_search(infile, count=count)
      if count eq 0 then begin

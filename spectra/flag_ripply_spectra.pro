@@ -31,7 +31,7 @@ pro flag_ripply_spectra $
   for i = 0, ndata-1 do begin
      
 ;    READ THE DATA
-     indir = working_data+'spectra/'
+     indir = working_dir+'spectra/'
      infile = indir+working_name[i]+'_'+tag+'.processed.fits'
      dummy = file_search(infile, count=count)
      if count eq 0 then begin
@@ -168,7 +168,7 @@ pro flag_ripply_spectra $
           oplot, sigma_cut_val*[1.,1.], [-1e6,1e6], color=getcolor('magenta')
 
           im = tvrd(true=1)
-          write_jpeg, working_data+'reports/flag_ripple_'+working_name[i]+'.jpeg' $
+          write_jpeg, working_dir+'reports/flag_ripple_'+working_name[i]+'.jpeg' $
                       , im, true=1
 
        endfor
