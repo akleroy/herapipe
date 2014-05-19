@@ -184,8 +184,8 @@ pro flag_noisy_spectra $
           if pix_ct eq 0 then begin
              loadct, 0, /silent
              reversect
-             plot, findgen(10), title=pixel_list[j]
-             oplot, 10.-1.*findgen(10)
+             plot, findgen(11), title=pixel_list[j], charsize=1.5
+             oplot, 10.-1.*findgen(11)
              continue
           endif
 
