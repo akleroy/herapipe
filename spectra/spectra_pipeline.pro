@@ -140,7 +140,7 @@ pro spectra_pipeline $
      bad_data_file = 'bad_data.txt'
 
 ; AN IDENTIFIER FOR THIS PIPELINE RUN
-  if n_elements(tag) eq 0 then tag = ''
+  if n_elements(tag) eq 0 then tag = 'temp'
 
 ; ---------------------------------------------------------------------
 ; Directory structure

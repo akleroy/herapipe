@@ -1,5 +1,6 @@
 pro windows_to_mask $
    , window_root $
+   , working_dir = working_dir $
    , target_hdr = target_hdr $
    , out_file = out_file $
    , ms_to_kms = ms_to_kms
@@ -11,7 +12,7 @@ pro windows_to_mask $
 ;
 
   if n_elements(out_file) eq 0 then $
-     out_file = 'temp_window_mask.fits'
+     out_file = working_dir+'masks/temp_window_mask.fits'
 
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
 ; MAKE THE (EMPTY) MASK

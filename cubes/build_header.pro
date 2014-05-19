@@ -1,5 +1,6 @@
 function build_header $
    , list_file $
+   , working_dir = working_dir $
    , tag = tag $
    , galaxy = galaxy $
    , use_mean_ctr = use_mean_ctr $
@@ -32,8 +33,8 @@ function build_header $
   for i = 0, ndata-1 do begin
 
 ;    READ THE DATA
-     indir = '../spectra/'
-     infile = indir+working_name[i]+tag+'.processed.fits'
+     indir = working_dir+'spectra/'
+     infile = indir+working_name[i]+'_'+tag+'.processed.fits'
      dummy = file_search(infile, count=count)
      if count eq 0 then begin
         message, 'File not found '+string(working_name[i])+'. Skipping.', /info
@@ -132,13 +133,14 @@ function build_header $
 ; TURN THIS INTO A BASIC WCS-COMPLIANT HEADER AND RETURN IT
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
 
-  target_header = make_iram_cube_header( $
-           tab_hdr = first_hdr $
-           , pix_scale = pix_scale $
-           , xsize = xsize $
-           , ysize = ysize $
-           , xctr = xctr $
-           , yctr = yctr)
+  target_header = $
+     make_iram_cube_header( $
+     tab_hdr = first_hdr $
+     , pix_scale = pix_scale $
+     , xsize = xsize $
+     , ysize = ysize $
+     , xctr = xctr $
+     , yctr = yctr)
 
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
 ; IF WE WANT TO PLAIT, WORK OUT THE SCAN ANGLES

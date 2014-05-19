@@ -1,5 +1,6 @@
 pro solve_for_gains $
    , list_file $
+   , working_dir = working_dir $
    , tag = tag $
    , prev_cube = prev_cube $
    , prev_mask_2d = prev_mask_2d $
@@ -19,11 +20,11 @@ pro solve_for_gains $
 ; READ THE PREVIOUS DATA CUBE AND THE MASK
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
 
-  cube_file = file_search(prev_cube, count=cube_ct)
+  cube_file = file_search(working_dir+"cubes/"+prev_cube, count=cube_ct)
 
-  mask_2d_file = file_search(prev_mask_2d, count=mask_2d_ct)
+  mask_2d_file = file_search(working_dir+"cubes/"+prev_mask_2d, count=mask_2d_ct)
 
-  mask_3d_file = file_search(prev_mask_3d, count=mask_3d_ct)
+  mask_3d_file = file_search(working_dir+"cubes/"+prev_mask_3d, count=mask_3d_ct)
 
   if (cube_ct + mask_2d_ct + mask_3d_ct) ne 3 then begin
      message, 'Need a previous mask, map, and cube to solve for the gains.'
@@ -73,8 +74,8 @@ pro solve_for_gains $
 ; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
      
 ;    READ THE DATA
-     indir = '../spectra/'
-     infile = indir+working_name[i]+tag+'.processed.fits'
+     indir = working_dir+'spectra/'
+     infile = indir+working_name[i]+'_'+tag+'.processed.fits'
      dummy = file_search(infile, count=count)
      if count eq 0 then begin
         message, 'File not found '+string(working_name[i])+'. Skipping.', /info
@@ -94,7 +95,7 @@ pro solve_for_gains $
 
 ;    INITIALIZE A .PS FILE
      if keyword_set(report) then begin
-        psfile = '../reports/gain_'+working_name[i]+'.ps'
+        psfile = working_dir+'reports/gain_'+working_name[i]+'.ps'
         ps, /ps, /def, /color, xsize=7, ysize=10, file=psfile
      endif
 

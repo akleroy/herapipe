@@ -63,6 +63,7 @@
 
 pro cube_pipeline $
 ;  GENERAL INPUT/OUTPUT
+   , working_dir = working_dir $
    , identifier = tag $
    , output_identifier = out_tag $
    , orig_data_file = orig_data_file $
@@ -116,6 +117,12 @@ pro cube_pipeline $
 ; Input files
 ; ---------------------------------------------------------------------
 
+; ROOT WORKING DIRECTORY (ASSUME WE ARE IN CODE/ AND GO UP ONE)
+  if n_elements(working_dir) eq 0 then begin
+     message, 'No working directory specified. Assuming ../', /info
+     working_dir = "../"
+  endif
+
 ; A FILE LISTING THE ORIGINAL .30M DATA
 ; FORMAT: "day" ".30m input file" "output file root (leave off '.fits')"
   if n_elements(orig_data_file) eq 0 then $
@@ -130,7 +137,7 @@ pro cube_pipeline $
   endif
 
 ; AN IDENTIFIER FOR THE INPUT 
-  if n_elements(tag) eq 0 then tag = ''
+  if n_elements(tag) eq 0 then tag = 'temp'
 
 ; AN IDENTIFIER FOR THE OUTPUT
   if n_elements(out_tag) eq 0 then out_tag = tag
@@ -140,7 +147,7 @@ pro cube_pipeline $
 ; ---------------------------------------------------------------------
 
 ; OUTPUT DIRECTORY FOR REPORTS/IMAGES
-  output_dir = '../cubes/'
+  output_dir = working_dir+'cubes/'
   if out_tag ne '' then $
      output_dir += out_tag+'/'
 
@@ -166,7 +173,7 @@ pro cube_pipeline $
   if keyword_set(cal_pixel_gain) then begin
 
 ;    AN ASCII FILE TO CONTAIN THE GAINS
-     gain_ascii_file = 'pixel_gains'+out_tag+'.txt'
+     gain_ascii_file = 'pixel_gains_'+out_tag+'.txt'
 
 ;    CHECK IF WE HAVE ALL THE FILES THAT WE NEED
      missing_files = $
@@ -279,6 +286,7 @@ pro cube_pipeline $
 
      solve_for_gains $
         , orig_data_file $
+        , working_dir = working_dir $
         , tag = tag $
         , prev_cube = prev_cube $
         , prev_mask_2d = prev_mask_2d $
@@ -311,6 +319,7 @@ pro cube_pipeline $
 ; MAKE A HEADER BASED ON THE AVAILABLE DATA
   target_hdr = build_header( $
                orig_data_file $
+               , working_dir = working_dir $
                , tag = tag $
                , galaxy = galaxy $
                , use_mean_ctr = use_mean_ctr $
@@ -324,16 +333,16 @@ pro cube_pipeline $
 ; MAKE A LIST OF CUBES THAT WE INTEND TO MAKE
   if keyword_set(plait) then $
      cube_list = $
-     output_dir + out_root + $
+     output_dir + out_root + '_' + $
      'ang' + strcompress(indgen(n_elements(uniq_ang))+1 $
                          , /remove_all) $
-     + out_tag $
+     + '_' + out_tag $
   else $
-     cube_list = output_dir + out_root + out_tag
+     cube_list = output_dir + out_root + '_' + out_tag
 
 ; SAVE THE HEADER AND CUBE LIST TO AN IDL FILE
   save, target_hdr, uniq_ang, plait, cube_list $
-        , file = 'cube_info'+out_tag+'.idl'
+        , file = 'cube_info_'+out_tag+'.idl'
 
   if keyword_set(just) then return 
 
@@ -353,7 +362,7 @@ pro cube_pipeline $
   grid:
   message, 'Gridding OTF maps.',/info
 
-  restore, 'cube_info'+out_tag+'.idl', /v
+  restore, 'cube_info_'+out_tag+'.idl', /v
   
   if n_elements(cube_list) eq 0 then begin
      message, 'Cannot find cube information.'
@@ -369,6 +378,7 @@ pro cube_pipeline $
 ;    GRID DATA EITHER ALL TOGETHER
      grid_wrapper $
         , orig_data_file $
+        , working_dir = working_dir $
         , tag = tag $
         , outfile = cube_list[i]+'_raw' $
         , target_hdr = target_hdr $
@@ -400,18 +410,20 @@ pro cube_pipeline $
   winmask:
   message, 'Making masks of the baseline fitting windows', /info
 
-  restore, 'cube_info'+out_tag+'.idl', /v
+  restore, 'cube_info_'+out_tag+'.idl', /v
 
   windows_to_mask $
      , blank_window_root $
+     , working_dir = working_dir $
      , target_hdr = target_hdr $
-     , out_file = output_dir + 'mask_blank' + out_tag + '.fits' $
+     , out_file = output_dir + 'mask_blank_' + out_tag + '.fits' $
      , /ms_to_kms
 
   windows_to_mask $
      , mask_window_root $
+     , working_dir = working_dir $
      , target_hdr = target_hdr $
-     , out_file = output_dir + 'mask_line' + out_tag + '.fits' $
+     , out_file = output_dir + 'mask_line_' + out_tag + '.fits' $
      , /ms_to_kms
 
   if keyword_set(just) then return
@@ -431,7 +443,7 @@ pro cube_pipeline $
   clean:
   message, 'Cleaning up the data cube(s)', /info
 
-  restore, 'cube_info'+out_tag+'.idl', /v
+  restore, 'cube_info_'+out_tag+'.idl', /v
   
   for i = 0, n_elements(cube_list)-1 do begin
 
@@ -440,7 +452,7 @@ pro cube_pipeline $
         , out_file = cube_list[i]+'.fits' $
         , coverage_cube = cube_list[i]+'_raw.coverage.fits' $
         , coverage_thresh = coverage_thresh $
-        , blank_mask = output_dir + 'mask_blank' + out_tag + '.fits' $
+        , blank_mask = output_dir + 'mask_blank_' + out_tag + '.fits' $
         , apodize=apodize $
         , apod_kern = apod_kern     
 
@@ -464,7 +476,7 @@ pro cube_pipeline $
   refit:
   message, '(Re)fitting baselines to the data cube(s)', /info
 
-  restore, 'cube_info'+out_tag+'.idl', /v
+  restore, 'cube_info_'+out_tag+'.idl', /v
 
   for i = 0, n_elements(cube_list)-1 do begin
 
@@ -472,7 +484,7 @@ pro cube_pipeline $
         , cube_list[i]+'.fits' $
         , out_file = cube_list[i]+'.fits' $
         , degree = degree $
-        , mask = output_dir + 'mask_line' + out_tag + '.fits' $
+        , mask = output_dir + 'mask_line_' + out_tag + '.fits' $
         , show = show
 
   endfor
@@ -497,7 +509,7 @@ pro cube_pipeline $
   if keyword_set(plait) then begin
      message, 'Plaiting OTF maps.',/info
      
-     restore, 'cube_info'+out_tag+'.idl', /v
+     restore, 'cube_info_'+out_tag+'.idl', /v
      
      if n_elements(cube_list) eq 0 then $
         message, 'Cannot find cube information.'
@@ -511,7 +523,7 @@ pro cube_pipeline $
         , angle_one = uniq_ang[0] $
         , file_two = cube_list[1]+'.fits' $
         , angle_two = uniq_ang[1] $
-        , out_file = output_dir + out_root + out_tag + '.fits' $
+        , out_file = output_dir + out_root + '_' + out_tag + '.fits' $
         , show = show $
         , /test
 
@@ -531,9 +543,9 @@ pro cube_pipeline $
   noise:
   
   make_noise_cube $
-     , cube_file = output_dir + out_root + out_tag + '.fits' $
-     , out_file = output_dir + 'noise' + out_tag + '.fits' $
-     , mask_file = output_dir + 'mask_line' + out_tag + '.fits' $
+     , cube_file = output_dir + out_root + '_' + out_tag + '.fits' $
+     , out_file = output_dir + 'noise' + '_' + out_tag + '.fits' $
+     , mask_file = output_dir + 'mask_line' + '_' + out_tag + '.fits' $
      , show=show
 
   if keyword_set(just) then return  
@@ -552,14 +564,25 @@ pro cube_pipeline $
   message, 'Masking cube.', /info
 
   heracles_masking $
-     , output_dir + out_root + out_tag + '.fits' $
-     , prior = output_dir + 'mask_line' + out_tag + '.fits' $
-     , mask_file = output_dir + out_root + out_tag + '_mask.fits' $
-     , bright_map_file = output_dir + out_root + out_tag + '_bright_map.fits' $
+     , output_dir + out_root + '_' + out_tag + '.fits' $
+     , prior = output_dir + 'mask_line' + '_' + out_tag + '.fits' $
+     , mask_file = output_dir + out_root + '_' + out_tag + '_mask.fits' $
+     , bright_map_file = output_dir + out_root + '_' + out_tag + '_bright_map.fits' $
      , show=show
   
   if keyword_set(just) then return
 
 ; ... END OF SIGNAL-ORIENTED MASKING
+
+
+; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
+; ERROR BEAM CORRECTION
+; &%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%&%
+; 
+; To be integrated
+;
+
+; TBD  
+
 
 end                             ; of CUBE portion of HERACLES pipeline
