@@ -2,7 +2,7 @@ function extract_windows, data
 
   max_nwindows = max(data.nwindows)
 
-  if max_windows eq 0 then $
+  if max_nwindows eq 0 then $
      return, !values.f_nan
 
   sz = size(data)
