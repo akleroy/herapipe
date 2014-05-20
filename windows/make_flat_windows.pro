@@ -48,7 +48,9 @@ pro make_flat_windows $
      offset = 0.0
     
 ; GET INFO FROM MY DATABASE ON THIS GALAXY
-  s = things_galaxies(gname)
+; s = things_galaxies(gname)
+  s = gal_data(gname, found=found) ; data_dir='local_root/galbase/gal_data/'
+  if found eq 0 then STOP
   
   if n_elements(vcenter) eq 0 then begin
      vcenter = s.vhel_kms
