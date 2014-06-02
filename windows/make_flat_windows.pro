@@ -48,7 +48,11 @@ pro make_flat_windows $
      offset = 0.0
     
 ; GET INFO FROM MY DATABASE ON THIS GALAXY
-  s = gal_data(gname)
+  s = gal_data(gname, found=found) ; data_dir='local_root/galbase/gal_data/'
+  if found eq 0 then begin
+     message, "Target not found in galaxy database. Stopping.", /info
+     stop
+  endif
   
   if n_elements(vcenter) eq 0 then begin
      vcenter = s.vrad_kms
