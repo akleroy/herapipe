@@ -48,10 +48,10 @@ pro make_flat_windows $
      offset = 0.0
     
 ; GET INFO FROM MY DATABASE ON THIS GALAXY
-  s = things_galaxies(gname)
+  s = gal_data(gname)
   
   if n_elements(vcenter) eq 0 then begin
-     vcenter = s.vhel_kms
+     vcenter = s.vrad_kms
      hel_to_lsr = 1
      ms_to_kms = 0
   endif
