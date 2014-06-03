@@ -1,6 +1,7 @@
 pro fourier_prune $
    , list_file $
    , tag = tag $
+   , working_dir = working_dir $
    , bad_channels = bad_channels $
    , show = show $
    , report = report $

@@ -100,7 +100,7 @@ pro make_vfield_windows $
   if blank_ct gt 0 then vfield[blank_ind] = !values.f_nan
   
 ; GET INFO FROM MY DATABASE ON THIS GALAXY
-  s = things_galaxies(gname)
+  s = gal_data(gname)
   
 ; DEFAULT SOURCE WIDTH = 100 KM/S
   if n_elements(source_window) eq 0 then $
