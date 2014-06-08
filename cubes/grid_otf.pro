@@ -11,7 +11,8 @@ pro grid_otf $
    , gauss_fwhm = gauss_fwhm $
    , median = use_median $
    , apodize = apodize $
-   , apod_fwhm = apod_fwhm
+   , apod_fwhm = apod_fwhm $
+   , nan=nan
 
 ;+
 ; NAME:
@@ -230,6 +231,32 @@ pro grid_otf $
      weight = fltarr(nspec) + 1.0
   endif
 
+; NOTE WHETHER WEIGHTS ARE "PER CHANNEL"
+; ... THIS IS 1 IF WEIGHTS ARE PER CHANNEL AND 0 IF ONE PER SPEC
+  if (size(weight))[0] eq 1 then begin
+     weight_in = weight
+     weight = fltarr(nspec, nchan)
+     for j = 0, nchan-1 do weight[*, j] = weight_in
+  endif
+
+  per_chan_wts = (size(weight))[0] eq 2
+  if per_chan_wts then begin
+     message,  "Per channel weights still experimental.", /info
+     unit_chans = (fltarr(nchan)+1.)
+  endif
+
+; SET THE WEIGHTS OF NOT-A-NUMBER DATA TO ZERO
+  if keyword_set(nan) then begin
+     nan_ind = where(finite(data) eq 0, nan_ct)
+     if nan_ct gt 0 then $
+        weight[nan_ind] = 0.0
+  endif else begin
+     if total(finite(data) eq 0) gt 0 then begin
+        message, "Not-a-number present but /nan not set.", /info
+        return
+     endif
+  endelse
+
 ; MAKE TWO EMPTY CUBES: DATA AND COVERAGE
   data_cube = !values.f_nan*fltarr(nx, ny, nchan)
   coverage_cube = fltarr(nx,ny,nchan) ; empty is 0 and not nan
@@ -306,11 +333,12 @@ pro grid_otf $
            if coverage gt cutoff_conv_fn then begin
 
 ;             GET A VECTOR OF NORMALIZED WEIGHTS
-              combined_weight = conv_fn * weight[keep]
-              total_weight = total(combined_weight)
-              combined_weight /= total_weight
+              combined_weight = (conv_fn # unit_chans) * weight[keep, *]
+              weight_spectrum = total(combined_weight,1)
+              combined_weight /= ((fltarr(keep_ct)+1.) # weight_spectrum)
 
 ;             IF REQUESTED, PERFORM A "WEIGHTED MEDIAN" ...
+;             ... DOESN'T WORK WITH TWO-D WEIGHTS
               if keyword_set(use_median) then begin
                  spectrum = fltarr(nchan)
                  for k = 0, nchan-1 do begin
@@ -330,12 +358,13 @@ pro grid_otf $
                     spectrum[k] = interpol(sorted_vals,cumul,0.5)
                  endfor
 ;             ... ELSE JUST GET THE AVERAGE SPECTRUM
-              endif else $
-                 spectrum = reform(data[keep,*] ## combined_weight)
+              endif else begin
+                 spectrum = total(data[keep,*] * combined_weight,1,/nan)
+              endelse
 
 ;             UPDATE THE DATA AND WEIGHTING CUBES
               data_cube[i,j,*] = spectrum
-              coverage_cube[i,j,*] = total_weight ; was "coverage"
+              coverage_cube[i,j,*] = weight_spectrum ; was "coverage"
            endif
         endif
 
