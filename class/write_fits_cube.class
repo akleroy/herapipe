@@ -31,6 +31,6 @@ sys "../../../class/write_fits_init.sh &1 &2"
 ! sic output
 
 ! run the gildas fits routine using our temporary init file
-sys "rm &2"
+sic delete &2
 run gildas_fits temp.init /nowindow
 
