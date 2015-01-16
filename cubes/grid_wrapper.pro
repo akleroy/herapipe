@@ -133,6 +133,7 @@ pro grid_wrapper $
                , median = use_median $
                , gauss_kern = gauss_kern $
                , gauss_fwhm = gauss_fwhm $
-               , show = show
+               , show = show $
+               , /nan
  
 end                             ; of grid_wrapper
