@@ -126,7 +126,8 @@ pro apply_user_flags $
                  data[flag].why_flagged += 'U'
               endif else begin
 ;       ... CASE 2: FLAG SPECIFIC CHANNELS (SETTING THEM TO NANS)
-                 data[flag,flag_lo[here]:flag_hi[here]] = !values.f_nan
+                 data[flag].spectrum[flag_lo[here]:flag_hi[here]] $
+                    = !values.f_nan
               endelse
            endif
 
