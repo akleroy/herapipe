@@ -106,7 +106,8 @@ pro apply_user_flags $
               return
            endif else begin
 ;       ... ELSE FLAG BAD CHANNELS (SET THEM TO NANS)
-              data[*,flag_lo[here]:flag_hi[here]] = !values.f_nan
+                 data.spectrum[flag_lo[here]:flag_hi[here]] $
+                    = !values.f_nan
            endelse
         endif
 
